@@ -8,6 +8,15 @@ export default {
       fontFamily: {
         sans: ["var(--font-geist-sans)", ...fontFamily.sans],
       },
+      animation: {
+        "infinite-scroll": "infiniteScroll 25s linear infinite",
+      },
+      keyframes: {
+        infiniteScroll: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-50%)" },
+        },
+      },
     },
   },
   plugins: [],
