@@ -10,7 +10,7 @@ const config = {
   ],
   extends: [
     'next/core-web-vitals',
-    // Commented out to disable @typescript-eslint
+    // Commented out to disable @typescript-eslint recommended rules
     // 'plugin:@typescript-eslint/recommended-type-checked',
     // 'plugin:@typescript-eslint/stylistic-type-checked',
   ],
