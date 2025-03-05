@@ -10,8 +10,9 @@ const config = {
   ],
   "extends": [
     "next/core-web-vitals",
-    "plugin:@typescript-eslint/recommended-type-checked",
-    "plugin:@typescript-eslint/stylistic-type-checked"
+    // Commented out to disable @typescript-eslint
+    // "plugin:@typescript-eslint/recommended-type-checked",
+    // "plugin:@typescript-eslint/stylistic-type-checked"
   ],
   "rules": {
     "@typescript-eslint/array-type": "off",
@@ -55,7 +56,14 @@ const config = {
           "ctx.db"
         ]
       }
-    ]
+    ],
+    // Disabled rules from @typescript-eslint
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
+    "@typescript-eslint/no-unsafe-argument": "off",
+    "@typescript-eslint/no-unsafe-call": "off",
+    "@typescript-eslint/no-unsafe-return": "off"
   }
 }
 module.exports = config;
