@@ -1,113 +1,83 @@
 "use client";
 
-import { useState, FormEvent } from "react";
-import { UploadButton } from "../utils/uploadthing";
+import { useState } from "react";
 
-export default function AddMoviePage() {
-  const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
-  const [rating, setRating] = useState<number>(5);
-  const [emoji, setEmoji] = useState<string>("");
-  const [error, setError] = useState<string | null>(null);
-  const [submitted, setSubmitted] = useState<boolean>(false);
+export default function UploadPage() {
+  const [image, setImage] = useState<File | null>(null);
+  const [comment, setComment] = useState("");
+  const [message, setMessage] = useState("");
 
-  const handleUploadComplete = (files?: { ufsUrl: string }[]) => {
-    if (!files || files.length === 0) {
-      setError("Failed to upload the movie poster.");
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!image || !comment) {
+      setMessage("Please provide both an image and a comment.");
       return;
     }
 
-    const uploadedFile = files[0];
-    if (uploadedFile?.ufsUrl) {
-      setUploadedFileUrl(uploadedFile.ufsUrl);
+    const formData = new FormData();
+    formData.append("image", image);
+    formData.append("comment", comment);
+
+    const res = await fetch("/api/uploads", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      setMessage("Upload successful!");
     } else {
-      setError("The uploaded file URL is invalid.");
-    }
-  };
-
-  const handleSubmit = async (event: FormEvent) => {
-    event.preventDefault();
-
-    if (!uploadedFileUrl || !emoji) {
-      setError("Please upload a movie poster and provide an emoji.");
-      return;
-    }
-
-    try {
-      const response = await fetch("/api/uploadthing", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          imageUrl: uploadedFileUrl,
-          rating,
-          emoji,
-        }),
-      });
-
-      if (!response.ok) throw new Error("Submission failed.");
-
-      setSubmitted(true);
-      setError(null); // Clear any previous errors
-    } catch (err) {
-      console.error(err);
-      setError("Error submitting the movie.");
+      setMessage(data.error || "Something went wrong.");
     }
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#D2B48C] to-[#483C32] text-white">
-      <div className="flex flex-row items-center gap-16">
-        {/* Upload Section */}
-        <div className="flex flex-col items-center gap-4">
-          <UploadButton
-            endpoint="movieUploader"
-            onClientUploadComplete={handleUploadComplete}
-            onUploadError={(error) => setError(`Upload error: ${error.message}`)}
-          />
-          {uploadedFileUrl && (
-            <img src={uploadedFileUrl} alt="Uploaded Movie Poster" className="w-[500px] h-[749px] rounded-lg" />
-          )}
-        </div>
-
-        {/* Form Section */}
-        <form className="flex flex-col items-start gap-8" onSubmit={handleSubmit}>
-          <h1 className="text-5xl font-extrabold">Add Your Movie</h1>
-          <div className="flex flex-col items-start gap-2">
-            <label htmlFor="rating" className="text-lg font-bold">Rate the Movie</label>
+    <main className="flex min-h-screen flex-col items-center justify-start pt-8 bg-gradient-to-b from-[#D2B48C] to-[#483C32] text-white">
+      <div className="container flex flex-col items-center gap-8 px-4 py-8">
+        <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
+          Upload <span className="text-[#6A4325]">Image & Comment</span>
+        </h1>
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-4 w-full max-w-md bg-white/10 p-6 rounded-xl shadow-lg"
+        >
+          <div className="flex flex-col gap-2">
+            <label htmlFor="image" className="text-lg font-bold">
+              Image:
+            </label>
             <input
-              id="rating"
-              type="range"
-              min="1"
-              max="10"
-              value={rating}
-              onChange={(e) => setRating(Number(e.target.value))}
+              type="file"
+              id="image"
+              accept="image/*"
+              onChange={(e) => setImage(e.target.files?.[0] || null)}
+              className="file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#6A4325] file:text-white hover:file:bg-[#5a371f] bg-white text-black rounded-lg p-2"
             />
-            <span>{rating}</span>
           </div>
-          <div className="flex flex-col items-start gap-2">
-            <label htmlFor="emoji" className="text-lg font-bold">Emoji</label>
-            <input
-              id="emoji"
-              type="text"
-              maxLength={1}
-              value={emoji}
-              onChange={(e) => setEmoji(e.target.value)}
-              placeholder="😊"
+          <div className="flex flex-col gap-2">
+            <label htmlFor="comment" className="text-lg font-bold">
+              Comment:
+            </label>
+            <textarea
+              id="comment"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              className="rounded-lg p-2 bg-white text-black"
+              rows={4}
             />
           </div>
           <button
             type="submit"
-            className={`px-4 py-2 rounded-md ${
-              !uploadedFileUrl ? "bg-gray-500 cursor-not-allowed" : "bg-[#6A4325] hover:bg-[#8A5A37]"
-            }`}
-            disabled={!uploadedFileUrl}
+            className="rounded-lg bg-[#6A4325] px-4 py-2 text-lg font-bold text-white hover:bg-[#5a371f]"
           >
-            Submit
+            Upload
           </button>
-          {error && <p className="text-red-500">{error}</p>}
-          {submitted && <p className="text-green-500">Movie successfully submitted!</p>}
         </form>
+        {message && (
+          <p className="text-lg font-semibold text-center text-white bg-[#6A4325] p-4 rounded-lg">
+            {message}
+          </p>
+        )}
       </div>
     </main>
   );

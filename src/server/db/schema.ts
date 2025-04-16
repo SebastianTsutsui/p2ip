@@ -32,20 +32,14 @@ export const p2ip_feedback = createTable(
   })
 );
 
-// Movies Table
-export const p2ip_movies = createTable(
-  "movies",
+export const p2ip_uploads = createTable(
+  "uploads",
   {
     id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
-    name: varchar("name", { length: 256 }).notNull(), // Movie Name
-    url: varchar("url", { length: 1024 }).notNull(), // Uploaded File URL
-    rating: integer("rating").notNull(), // Rating (1-10)
-    emoji: varchar("emoji", { length: 1 }).notNull(), // Single Emoji
+    imageUrl: varchar("image_url", { length: 255 }).notNull(), // URL to the uploaded image
+    comment: text("comment").notNull(), // Short comment
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
-      () => new Date()
-    ),
   }
 );
