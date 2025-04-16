@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 type Upload = {
   id: number;
@@ -39,7 +40,15 @@ export default function DisplayUploadsPage() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-start pt-8 bg-gradient-to-b from-[#D2B48C] to-[#483C32] text-white">
+    <main className="flex min-h-screen flex-col items-center justify-start pt-8 bg-gradient-to-b from-[#D2B48C] to-[#483C32] text-white relative">
+      {/* Home Button */}
+      <Link
+        href="/"
+        className="absolute top-4 left-4 rounded-lg bg-[#6A4325] px-4 py-2 text-white font-bold hover:bg-[#5a371f]"
+      >
+        Home
+      </Link>
+
       <div className="container flex flex-col items-center gap-8 px-4 py-8">
         <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
           Uploaded <span className="text-[#6A4325]">Posters & Comments</span>

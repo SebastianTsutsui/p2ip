@@ -44,7 +44,6 @@ export default function HomePage() {
           <Link
             className="flex flex-col gap-2 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
             href="/pageFour"
-            target="_blank"
           >
             <h3 className="text-2xl font-bold">Rate A Movie →</h3>
             <div className="text-lg">
@@ -54,7 +53,6 @@ export default function HomePage() {
           <Link
             className="flex flex-col gap-2 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
             href="/pageFive"
-            target="_blank"
           >
             <h3 className="text-2xl font-bold">Your Ratings →</h3>
             <div className="text-lg">
@@ -64,7 +62,6 @@ export default function HomePage() {
           <Link
             className="flex flex-col gap-2 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
             href="/pageTwo"
-            target="_blank"
           >
             <h3 className="text-2xl font-bold">Leave Feedback →</h3>
             <div className="text-lg">
@@ -74,7 +71,6 @@ export default function HomePage() {
           <Link
             className="flex flex-col gap-2 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
             href="/pageThree"
-            target="_blank"
           >
             <h3 className="text-2xl font-bold">About Us →</h3>
             <div className="text-lg">

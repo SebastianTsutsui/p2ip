@@ -21,6 +21,13 @@ export async function POST(request: NextRequest) {
   }
 }
 
-  
-
+export async function GET() {
+  try {
+    const feedback = await db.select().from(p2ip_feedback);
+    return NextResponse.json(feedback, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching feedback:", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  }
+}
 
